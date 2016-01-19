@@ -94,21 +94,17 @@ public class EventBusSimple<E extends Event> implements EventBus<E> {
                 continue;
             }
 
-            if (eh.getType() == null) {
-                if (eh.canHandle(event.getType())) {
-                    runHandler(eh, event);
+            try {
+                if (eh.getType() == null) {
+                    if (eh.canHandle(event.getType())) {
+                        eh.handle(event);
+                    }
+                } else if (eh.getType().equals(event.getType())) {
+                    eh.handle(event);
                 }
-            } else if (eh.getType().equals(event.getType())) {
-                runHandler(eh, event);
+            } catch (Throwable th) {
+                logger.error("Handler fail on event " + event.getType() + ". " + th.getMessage(), th);
             }
-        }
-    }
-
-    private void runHandler(EventHandler<E> eh, E event) {
-        try {
-            eh.handle(event);
-        } catch (Throwable th) {
-            logger.error("Handler fail on event " + event.getType() + ". " + th.getMessage(), th);
         }
     }
 }

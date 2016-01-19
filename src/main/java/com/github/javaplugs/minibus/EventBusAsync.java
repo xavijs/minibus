@@ -116,16 +116,20 @@ public class EventBusAsync<E extends Event> implements EventBus<E> {
                 continue;
             }
 
-            if (eh.getType() == null) {
-                if (eh.canHandle(event.getType())) {
+            try {
+                if (eh.getType() == null) {
+                    if (eh.canHandle(event.getType())) {
+                        handlersExecutor.submit(() -> {
+                            runHandler(eh, event);
+                        });
+                    }
+                } else if (eh.getType().equals(event.getType())) {
                     handlersExecutor.submit(() -> {
                         runHandler(eh, event);
                     });
                 }
-            } else if (eh.getType().equals(event.getType())) {
-                handlersExecutor.submit(() -> {
-                    runHandler(eh, event);
-                });
+            } catch (Throwable th) {
+                logger.error("Handler notify fail on event " + event.getType() + ". " + th.getMessage(), th);
             }
         }
     }

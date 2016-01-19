@@ -42,9 +42,10 @@ public interface EventHandler<E extends Event> {
     /**
      * In a case if {@link EventHandler#getType()} return null this method will be called to
      * check if current event type can be handled here.
+     * If getType() result is not null this method will not be called.
      *
      * @param eventType Event type
-     * @return True if event with current type should be passed to handle method.
+     * @return True if event type can be handled or False.
      */
     boolean canHandle(String eventType);
 
