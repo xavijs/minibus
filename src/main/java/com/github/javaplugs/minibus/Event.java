@@ -216,7 +216,7 @@ public class Event {
      * @param key Property key
      * @return String or null if not value
      */
-    String getString(String key) {
+    public String getString(String key) {
         Object val = properties.get(key);
 
         return val == null ? null : val.toString();
@@ -229,7 +229,7 @@ public class Event {
      * @param key Property key
      * @return String or default value
      */
-    String getStringOr(String key, String defaultValue) {
+    public String getStringOr(String key, String defaultValue) {
         String str = getString(key);
         return str == null ? defaultValue : str;
     }

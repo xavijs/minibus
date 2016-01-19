@@ -28,7 +28,7 @@ package com.github.javaplugs.minibus;
  * There is no restriction on how many handlers will be subscribed to one or another event type.
  * Keep in mind that handler will be subscribed to EventBush using weak link.
  */
-public interface EventHandler {
+public interface EventHandler<E extends Event> {
 
     /**
      * Return exact event type that must be handled by this handler.
@@ -51,5 +51,5 @@ public interface EventHandler {
     /**
      * This method should handle event of appropriate type.
      */
-    void handle(Event event);
+    void handle(E event);
 }

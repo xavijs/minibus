@@ -38,13 +38,13 @@ import java.util.concurrent.Executors;
 /**
  *
  */
-public class EventBusAsync implements EventBus {
+public class EventBusAsync<E extends Event> implements EventBus<E> {
 
     private static final Logger logger = LoggerFactory.getLogger(EventBusAsync.class);
 
     private final Thread eventQueueThread;
 
-    private final Queue<Event> eventsQueue = new ConcurrentLinkedQueue<>();
+    private final Queue<E> eventsQueue = new ConcurrentLinkedQueue<>();
 
     private final ReferenceQueue gcQueue = new ReferenceQueue();
 
@@ -72,17 +72,17 @@ public class EventBusAsync implements EventBus {
     }
 
     @Override
-    public void subscribe(EventHandler subscriber) {
+    public void subscribe(EventHandler<E> subscriber) {
         handlers.add(new WeakHandler(subscriber, gcQueue));
     }
 
     @Override
-    public void unsubscribe(EventHandler subscriber) {
+    public void unsubscribe(EventHandler<E> subscriber) {
         handlers.remove(new WeakHandler(subscriber, gcQueue));
     }
 
     @Override
-    public void publish(Event event) {
+    public void publish(E event) {
         if (event == null) {
             return;
         }
@@ -102,14 +102,14 @@ public class EventBusAsync implements EventBus {
                 handlers.remove(wh);
             }
 
-            Event event = eventsQueue.poll();
+            E event = eventsQueue.poll();
             if (event != null) {
                 notifySubscribers(event);
             }
         }
     }
 
-    private void notifySubscribers(Event event) {
+    private void notifySubscribers(E event) {
         for (WeakHandler wh : handlers) {
             EventHandler eh = wh.get();
             if (eh == null) {
@@ -130,7 +130,7 @@ public class EventBusAsync implements EventBus {
         }
     }
 
-    private static void runHandler(EventHandler eh, Event event) {
+    private void runHandler(EventHandler eh, E event) {
         try {
             eh.handle(event);
         } catch (Throwable th) {

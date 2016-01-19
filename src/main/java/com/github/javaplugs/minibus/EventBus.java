@@ -28,8 +28,8 @@ package com.github.javaplugs.minibus;
  * I assume that there can be several possible implementations with different approach to
  * event/threads handling.
  */
-public interface EventBus {
-    
+public interface EventBus<E extends Event> {
+
     /**
      * Subscribe consumer to the event bus using weak link.
      *
@@ -38,7 +38,7 @@ public interface EventBus {
      *
      * @param subscriber The object to subscribe to the event bus.
      */
-    void subscribe(EventHandler subscriber);
+    void subscribe(EventHandler<E> subscriber);
 
     /**
      * Removes the specified consumer from the event bus subscription list.
@@ -47,7 +47,7 @@ public interface EventBus {
      *
      * @param subscriber The object previous subscribed to the event bus.
      */
-    void unsubscribe(EventHandler subscriber);
+    void unsubscribe(EventHandler<E> subscriber);
 
     /**
      * Sends a message on the bus which will be propagated to the appropriate
@@ -58,7 +58,7 @@ public interface EventBus {
      *
      * @param event Event to publish
      */
-    void publish(Event event);
+    void publish(E event);
 
     /**
      * Indicates whether the bus has pending events to publish. Since message/event

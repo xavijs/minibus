@@ -38,7 +38,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * You can use it in a cases where event publishing is rare
  * or if you require to run everything in one thread.
  */
-public class EventBusSimple implements EventBus {
+public class EventBusSimple<E extends Event> implements EventBus<E> {
 
     private static final Logger logger = LoggerFactory.getLogger(EventBusSimple.class);
 
@@ -49,17 +49,17 @@ public class EventBusSimple implements EventBus {
     private final Set<WeakHandler> handlers = Collections.newSetFromMap(new ConcurrentHashMap<WeakHandler, Boolean>());
 
     @Override
-    public void subscribe(EventHandler subscriber) {
+    public void subscribe(EventHandler<E> subscriber) {
         handlers.add(new WeakHandler(subscriber, gcQueue));
     }
 
     @Override
-    public void unsubscribe(EventHandler subscriber) {
+    public void unsubscribe(EventHandler<E> subscriber) {
         handlers.remove(new WeakHandler(subscriber, gcQueue));
     }
 
     @Override
-    public void publish(Event event) {
+    public void publish(E event) {
         if (event == null) {
             return;
         }
@@ -77,7 +77,7 @@ public class EventBusSimple implements EventBus {
         return processing.get() > 0;
     }
 
-    private void processEvent(Event event) {
+    private void processEvent(E event) {
         WeakHandler wh;
         while ((wh = (WeakHandler)gcQueue.poll()) != null) {
             handlers.remove(wh);
@@ -87,7 +87,7 @@ public class EventBusSimple implements EventBus {
         }
     }
 
-    private void notifySubscribers(Event event) {
+    private void notifySubscribers(E event) {
         for (WeakHandler wh : handlers) {
             EventHandler eh = wh.get();
             if (eh == null) {
@@ -104,7 +104,7 @@ public class EventBusSimple implements EventBus {
         }
     }
 
-    private static void runHandler(EventHandler eh, Event event) {
+    private void runHandler(EventHandler<E> eh, E event) {
         try {
             eh.handle(event);
         } catch (Throwable th) {
