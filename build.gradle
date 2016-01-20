@@ -3,7 +3,7 @@ apply plugin: 'maven-publish'
 
 
 group = 'com.github.javaplugs'
-version = '0.1-a4'
+version = '0.1'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -14,8 +14,7 @@ repositories {
 }
 
 dependencies {
-    compile 'javax.jms:javax.jms-api:2.0'
-    compile 'org.slf4j:slf4j-api:1.+'
+    compile 'org.slf4j:slf4j-api:1.7.+'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
