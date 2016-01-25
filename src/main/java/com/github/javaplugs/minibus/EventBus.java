@@ -50,11 +50,10 @@ public interface EventBus<E extends Event> {
     void unsubscribe(EventHandler<E> subscriber);
 
     /**
-     * Sends a message on the bus which will be propagated to the appropriate
-     * subscribers related to event type.
+     * Sends a event (message) to the bus which will be propagated to the appropriate subscribers (handlers).
      *
      * There is no specification given as to how the messages will be delivered,
-     * in terms of synchronous or asynchronous.
+     * and should be determine in each implementation.
      *
      * @param event Event to publish
      */

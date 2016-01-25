@@ -36,7 +36,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- *
+ * Async event bus that will run each event/handler call in separate thread.
+ * By default using CachedThreadPool to run handlers.
  */
 public class EventBusAsync<E extends Event> implements EventBus<E> {
 

@@ -5,31 +5,8 @@
 This can be used as an alternative for Guava EventBus.
 
 ## Adding to your project
-To get latest commit use -SNAPSHOT keyword instead version number
 
-### Gradle dependencies
-```
-repositories {
-  maven {
-    url "https://jitpack.io"
-  }
-}
+You can add this artifact to your project using [JitPack](https://jitpack.io/#javaplugs/minibus).
+All versions list, instructions for gradle, maven, ivy etc. can be found by link above.
 
-dependencies {
-  compile 'com.github.javaplugs:minibus:0.1'
-}
-```
-
-### Maven dependencies
-```
-<repository>
-    <id>jitpack.io</id>
-    <url>https://jitpack.io</url>
-</repository>
-
-<dependency>
-    <groupId>com.github.javaplugs</groupId>
-    <artifactId>minibus</artifactId>
-    <version>0.1</version>
-</dependency>
-```
+To get latest commit use -SNAPSHOT keyword instead version number.

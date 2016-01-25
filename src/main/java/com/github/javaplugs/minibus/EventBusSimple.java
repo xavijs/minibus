@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Simple event bus with no background threads.
  * All consumers will be called directly during event publishing.
  * You can use it in a cases where event publishing is rare
- * or if you require to run everything in one thread.
+ * or if there is requirement to use as less threads as possible.
  */
 public class EventBusSimple<E extends Event> implements EventBus<E> {
 
