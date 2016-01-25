@@ -133,7 +133,7 @@ public class Event {
      * Object values are stored in separate collection that key-value properties.
      */
     public <T> T getObject(Class<T> cls) {
-        Object obj = objects.get(cls.getClass());
+        Object obj = objects.get(cls);
         if (obj == null) {
             return null;
         }
