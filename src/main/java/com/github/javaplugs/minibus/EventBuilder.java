@@ -44,7 +44,7 @@ public class EventBuilder {
     /**
      * Put property into event properties.
      */
-    public EventBuilder put(String key, Object value) {
+    public EventBuilder val(String key, Object value) {
         event.setValue(key, value);
         return this;
     }
