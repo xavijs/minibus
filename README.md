@@ -41,7 +41,7 @@ public class SimpleHandler implements EventHandler<Event>{
 
 #### Advanced handler
 If you want to handle several types of events,
-that you should decide what event type to process using canHandle method.
+than you should decide what event type to process using canHandle method.
 
 ```java
 public class AdvHandler implements EventHandler<Event>{
@@ -65,7 +65,7 @@ Now you have to create your EventBus and subscribe your handlers.
 ```java
 // This is recommended implementation.
 // In a case if you want to handle all events in current thread only 
-// you can useEventBusSimple
+// you can use EventBusSimple
 EventBus<Event> eventBus = new EventBusAsync<>();
 
 // Now just subscribe your listeners here, 
@@ -83,7 +83,6 @@ Event ev1 = new Event("SIMPLE_EVENT");
 ev1.setValue("value_key", 42);
 ev1.setValue("value_other_key", "You can put any object here");
 eventBus.publish(ev1); // Will be send to SimpleHandler
-
 
 Event ev2 = new Event("USER_CREATED");
 ev2.setValue("id", 42);
@@ -105,4 +104,4 @@ Current event bus implementation allows you to use your own event type with help
 * Create appropriate handlers
 * Initialize EventBus with CustomEvent
 
-That is all. Now you can you your own CustomEvent or maybe several events based on CustomEvent.
+That is all. Now you can use your own CustomEvent or maybe several events types based on CustomEvent.
