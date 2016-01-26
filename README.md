@@ -1,6 +1,15 @@
-# Lightweight event bus for java applications
+# Lightweight event bus for java application
 
-This can be used as an alternative for Guava EventBus.
+There is some cases then you have only one (sometimes huge) instance of your application.  
+In this case:
+
+* you do not need the enterprise functionality from RabbitMQ, ActiveMQ, HornetQ or any other MQ/JMX provider
+* you requirements is so simple that even guava EventBus looks huge to you
+* all you need is to send a message within one instance plus little extensibility
+
+It this case current minibus can really help you.
+It is very simple event bus implementation, based on observervable pattern.
+You can use it as dependency or modify it for your needs, it is just several hundreds lines of code.
 
 [![Release](https://jitpack.io/v/javaplugs/minibus.svg)](https://jitpack.io/#javaplugs/minibus)  
 [API javadoc](https://jitpack.io/com/github/javaplugs/minibus/-SNAPSHOT/javadoc/)
