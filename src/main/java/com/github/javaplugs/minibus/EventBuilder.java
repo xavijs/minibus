@@ -23,14 +23,19 @@
  */
 package com.github.javaplugs.minibus;
 
+import java.lang.reflect.Constructor;
+
 /**
- * Typical builder for Event type.
+ * Builder for Event type.
+ * You can create builder for your own event type only by extending it
+ * and implementing your own create method.
+ * Or you can implement create method in any part of your code.
  */
-public class EventBuilder {
+public class EventBuilder<E extends Event> {
 
-    private final Event event;
+    private final E event;
 
-    private EventBuilder(Event event) {
+    public EventBuilder(E event) {
         this.event = event;
     }
 
@@ -42,23 +47,26 @@ public class EventBuilder {
     }
 
     /**
-     * Put property into event properties.
+     * Create new builder for any event subclass with specific type.
      */
-    public EventBuilder val(String key, Object value) {
-        event.setValue(key, value);
-        return this;
+    public static <T extends Event> EventBuilder<T> create(Class<T> cls, String eventType) {
+        try {
+            Constructor<T> constructor = cls.getConstructor(String.class);
+            return new EventBuilder<>(constructor.newInstance(eventType));
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("Can not create event builder for " + cls + " and type " + eventType, ex);
+        }
     }
 
     /**
-     * Set object value.
-     * Used separate structure than for properties.
+     * Put property into event properties.
      */
-    public EventBuilder set(Object objectValue) {
-        event.setObject(objectValue);
+    public EventBuilder<E> set(String key, Object value) {
+        event.set(key, value);
         return this;
     }
 
-    public Event build() {
+    public E build() {
         return this.event;
     }
 }

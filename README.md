@@ -89,28 +89,29 @@ All you need is to create event with valid event type.
 
 ```java
 Event ev1 = new Event("SIMPLE_EVENT");
-ev1.setValue("value_key", 42);
-ev1.setValue("value_other_key", "You can put any object here");
+ev1.set("value_key", 42);
+ev1.set("value_other_key", "You can put any object here");
 eventBus.publish(ev1); // Will be send to SimpleHandler
 
 Event ev2 = new Event("USER_CREATED");
-ev2.setValue("id", 42);
+ev2.set("id", 42);
 eventBus.publish(ev2); // To AdvHandler
 
 // To AdvHandler using event builder
 eventBus.publish(
     EventBuilder.create("USER_EMAIL_CONFIRMED")
-    .val("id", 4242)
+    .set("id", 4242)
     .build()
 );
 ```
 
 ### Advanced usage
-Current event bus implementation allows you to use your own event type with help of java generics.
+Current event bus implementation allows you to extent functionality with help of generics:
 
 * Create CustomEvent type extending Event
 * Optionally create CustomEventHandler interface extending EventHandler<CustomEvent> interface
 * Create appropriate handlers
-* Initialize EventBus with CustomEvent
+* Initialize EventBus with CustomEvent and your done
+* Also you are able to use event builder for your CustomEvent type
 
 That is all. Now you can use your own CustomEvent or maybe several events types based on CustomEvent.
