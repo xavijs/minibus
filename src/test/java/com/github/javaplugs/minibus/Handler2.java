@@ -7,7 +7,7 @@ public class Handler2 extends EventBusHandler<Event2> {
     AtomicInteger counter = new AtomicInteger();
 
     @Override
-    void handle(Event2 event) {
+    protected void handle(Event2 event) {
         counter.incrementAndGet();
     }
 

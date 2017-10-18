@@ -13,7 +13,7 @@ public class Handler234 extends EventBusHandler<EventBusEvent> {
     AtomicInteger counter = new AtomicInteger();
 
     @Override
-    Class<EventBusEvent> getTypeClass() {
+    protected Class<EventBusEvent> getTypeClass() {
         return null;
     }
 
@@ -32,7 +32,7 @@ public class Handler234 extends EventBusHandler<EventBusEvent> {
     }
 
     @Override
-    void handle(EventBusEvent event) {
+    protected void handle(EventBusEvent event) {
         counter.incrementAndGet();
     }
 }

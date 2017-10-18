@@ -1,18 +1,8 @@
-buildscript {
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.1'
-	}
-}
-
 apply plugin: 'java'
 apply plugin: 'maven-publish'
-apply plugin: 'org.junit.platform.gradle.plugin'
 
 group = 'com.github.javaplugs'
-version = '0.4.0-beta'
+version = '0.4.0-beta2'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8

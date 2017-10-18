@@ -27,7 +27,7 @@ public class EventBusAsyncTest {
     @Test
     void test() throws InterruptedException {
 
-        assertThat(h1.counter).hasValue(1);
+        assertThat(h1.counter).hasValue(0);
         assertThat(h2.counter).hasValue(0);
         assertThat(h3.counter).hasValue(0);
         assertThat(h234.counter).hasValue(0);

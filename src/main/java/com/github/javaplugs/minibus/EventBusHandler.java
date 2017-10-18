@@ -50,7 +50,7 @@ public abstract class EventBusHandler<E extends EventBusEvent> {
      *
      * @return Compatible class or null
      */
-    Class<E> getTypeClass() {
+    protected Class<E> getTypeClass() {
         return getGenericTypeClass();
     }
 
@@ -73,5 +73,5 @@ public abstract class EventBusHandler<E extends EventBusEvent> {
     /**
      * This method should handle event of appropriate type.
      */
-    abstract void handle(E event);
+    protected abstract void handle(E event);
 }
