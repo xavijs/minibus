@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. 
  */
-package com.github.javaplugs.minibus;
+package com.github.javaplugs.minibus.old;
 
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
@@ -29,20 +29,14 @@ import java.lang.ref.WeakReference;
 /**
  * Provide weak link wrapper for handler class and expose some generic handlers methods.
  */
-class WeakHandler<H extends EventBusHandler> extends WeakReference<H> {
+@Deprecated
+class WeakHandler extends WeakReference<EventHandler> {
 
     private final int hash;
 
-    private final Class handlerTypeClass;
-
-    WeakHandler(H handler, ReferenceQueue q) {
+    WeakHandler(EventHandler handler, ReferenceQueue q) {
         super(handler, q);
         hash = handler.hashCode();
-        handlerTypeClass = handler.getTypeClass();
-    }
-
-    public Class getHandlerTypeClass() {
-        return handlerTypeClass;
     }
 
     @Override

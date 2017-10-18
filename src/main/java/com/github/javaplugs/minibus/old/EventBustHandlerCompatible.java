@@ -21,36 +21,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. 
  */
-package com.github.javaplugs.minibus;
+package com.github.javaplugs.minibus.old;
+
+import com.github.javaplugs.minibus.EventBusHandler;
+
+import java.lang.reflect.ParameterizedType;
 
 /**
- * Any subtype of this can handle messages in EventBus.
- * There is no restriction on how many handlers will be subscribed to one or another event type.
- * Keep in mind that handler will be subscribed to EventBush using weak link.
+ * Created for backward compatibility/migration purpose.
+ * This handler can be migrated to {@link EventBusHandler} in your code later.
  */
-public interface EventHandler<E extends Event> {
+@Deprecated
+public abstract class EventBustHandlerCompatible<E extends Event> implements EventHandler<E> {
 
-    /**
-     * Return exact event type that must be handled by this handler.
-     * Can return null in this case {@link EventHandler#canHandle(java.lang.String)}
-     * will be called each time to decide if particular message should be handled by current consumer.
-     *
-     * @return Type name or null
-     */
-    String getType();
+    public Class<E> eventClass;
 
-    /**
-     * In a case if {@link EventHandler#getType()} return null this method will be called to
-     * check if current event type can be handled here.
-     * If getType() result is not null this method will not be called.
-     *
-     * @param eventType Event type
-     * @return True if event type can be handled or False.
-     */
-    boolean canHandle(String eventType);
+    Class<E> getTypeClass() {
+        if (eventClass == null) {
+            eventClass = (Class<E>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        }
+        return eventClass;
+    }
+
+    private E toEvent(Event e) {
+        if (!e.getClass().isAssignableFrom(getTypeClass())) {
+            throw new IllegalArgumentException("Can not cast " + e.getClass().getCanonicalName()
+                + " to " + getTypeClass().getCanonicalName());
+        }
+        return (E)e;
+    }
+
+    @Override
+    public void handle(Event event) {
+        this.handleEvent(toEvent(event));
+    }
 
     /**
      * This method should handle event of appropriate type.
      */
-    void handle(E event);
+    abstract void handleEvent(E event);
 }

@@ -23,50 +23,11 @@
  */
 package com.github.javaplugs.minibus;
 
-import java.lang.ref.ReferenceQueue;
-import java.lang.ref.WeakReference;
-
 /**
- * Provide weak link wrapper for handler class and expose some generic handlers methods.
+ * Immutable Event that can be processed in EventBus.
+ * Note that you should take care about your events immutability.
+ * We suggest you to use only final properties, and in a case if you need builder
+ * for your message, you can use lombock {@link https://projectlombok.org} library for this purpose.
  */
-class WeakHandler<H extends EventBusHandler> extends WeakReference<H> {
-
-    private final int hash;
-
-    private final Class handlerTypeClass;
-
-    WeakHandler(H handler, ReferenceQueue q) {
-        super(handler, q);
-        hash = handler.hashCode();
-        handlerTypeClass = handler.getTypeClass();
-    }
-
-    public Class getHandlerTypeClass() {
-        return handlerTypeClass;
-    }
-
-    @Override
-    public int hashCode() {
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof WeakHandler)) {
-            return false;
-        }
-
-        Object t = this.get();
-        Object u = ((WeakHandler)obj).get();
-        if (t == u) {
-            return true;
-        }
-        if (t == null || u == null) {
-            return false;
-        }
-        return t.equals(u);
-    }
+public interface EventBusEvent {
 }

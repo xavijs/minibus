@@ -21,17 +21,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. 
  */
-package com.github.javaplugs.minibus;
-
-import java.util.Collection;
-import java.util.function.BiConsumer;
+package com.github.javaplugs.minibus.old;
 
 /**
  * Generic event bus interface.
  * I assume that there can be several possible implementations with different approach to
  * event/threads handling.
  */
-public interface EventBus<E extends EventBusEvent> {
+@Deprecated
+public interface EventBus<E extends Event> {
 
     /**
      * Subscribe consumer to the event bus using weak link.
@@ -41,7 +39,7 @@ public interface EventBus<E extends EventBusEvent> {
      *
      * @param subscriber The object to subscribe to the event bus.
      */
-    void subscribe(EventBusHandler<? extends E> subscriber);
+    void subscribe(EventHandler<E> subscriber);
 
     /**
      * Removes the specified consumer from the event bus subscription list.
@@ -50,7 +48,7 @@ public interface EventBus<E extends EventBusEvent> {
      *
      * @param subscriber The object previous subscribed to the event bus.
      */
-    void unsubscribe(EventBusHandler<? extends E> subscriber);
+    void unsubscribe(EventHandler<E> subscriber);
 
     /**
      * Sends a event (message) to the bus which will be propagated to the appropriate subscribers (handlers).

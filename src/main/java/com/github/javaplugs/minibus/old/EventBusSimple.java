@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. 
  */
-package com.github.javaplugs.minibus;
+package com.github.javaplugs.minibus.old;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * You can use it in a cases where event publishing is rare
  * or if there is requirement to use as less threads as possible.
  */
-public class EventBusSimple<E extends EventBusEvent> implements EventBus<E> {
+@Deprecated
+public class EventBusSimple<E extends Event> implements EventBus<E> {
 
     private static final Logger logger = LoggerFactory.getLogger(EventBusSimple.class);
 
@@ -46,15 +47,15 @@ public class EventBusSimple<E extends EventBusEvent> implements EventBus<E> {
 
     private final AtomicInteger processing = new AtomicInteger();
 
-    private final Set<WeakHandler<EventBusHandler<E>>> handlers = Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final Set<WeakHandler> handlers = Collections.newSetFromMap(new ConcurrentHashMap<WeakHandler, Boolean>());
 
     @Override
-    public void subscribe(EventBusHandler<? extends E> subscriber) {
+    public void subscribe(EventHandler<E> subscriber) {
         handlers.add(new WeakHandler(subscriber, gcQueue));
     }
 
     @Override
-    public void unsubscribe(EventBusHandler<? extends E> subscriber) {
+    public void unsubscribe(EventHandler<E> subscriber) {
         handlers.remove(new WeakHandler(subscriber, gcQueue));
     }
 
@@ -65,6 +66,7 @@ public class EventBusSimple<E extends EventBusEvent> implements EventBus<E> {
         }
         processing.incrementAndGet();
         try {
+            event.lock();
             processEvent(event);
         } finally {
             processing.decrementAndGet();
@@ -87,23 +89,22 @@ public class EventBusSimple<E extends EventBusEvent> implements EventBus<E> {
     }
 
     private void notifySubscribers(E event) {
-        for (WeakHandler<EventBusHandler<E>> wh : handlers) {
-            EventBusHandler<E> eh = wh.get();
+        for (WeakHandler wh : handlers) {
+            EventHandler eh = wh.get();
             if (eh == null) {
                 continue;
             }
 
             try {
-                if (eh.getTypeClass() == null) {
-                    if (eh.canHandle(event.getClass())) {
+                if (eh.getType() == null) {
+                    if (eh.canHandle(event.getType())) {
                         eh.handle(event);
                     }
-                } else if (eh.getTypeClass().equals(event.getClass())) {
+                } else if (eh.getType().equals(event.getType())) {
                     eh.handle(event);
                 }
             } catch (Throwable th) {
-                logger.error("Event processing fail " + event.getClass().getSimpleName()
-                    + ". " + th.getMessage(), th);
+                logger.error("Handler fail on event " + event.getType() + ". " + th.getMessage(), th);
             }
         }
     }

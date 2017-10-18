@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. 
  */
-package com.github.javaplugs.minibus;
+package com.github.javaplugs.minibus.old;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -36,6 +36,7 @@ import java.util.Optional;
  *
  * Keep in mind that Event is not serializable because it should be used only in one active instance.
  */
+@Deprecated
 public class Event {
 
     private final String type;

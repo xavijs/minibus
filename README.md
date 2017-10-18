@@ -1,13 +1,12 @@
 # Lightweight event bus for java application
 
 There is some cases then you have only one (sometimes huge) instance of your application.  
-In this case:
+In this case often:
 
-* you do not need the enterprise functionality from RabbitMQ, ActiveMQ, HornetQ or any other MQ/JMX provider
-* you requirements is so simple that even guava EventBus looks huge to you
 * all you need is to send a message within one instance plus little extensibility
+* thus you do not need the enterprise functionality from RabbitMQ, ActiveMQ, HornetQ or any other MQ/JMX provider
 
-It this case current minibus can really help you.
+MiniBus can help you to add easy event based processing to existing application.
 It is very simple event bus implementation, based on observervable pattern.
 You can use it as dependency or modify it for your needs, it is just several hundreds lines of code.
 
@@ -25,7 +24,7 @@ To get latest commit use -SNAPSHOT instead version number.
 
 ### Installation
 1. Add dependency to your project.
-2. This library using slf4j-api which output log messages to /dev/null. 
+2. This library using slf4j-api which output log messages to /dev/null by default. 
 You have to configure proper logger for slf4j in your project to view this messages.
 
 ### Create your handlers

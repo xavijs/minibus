@@ -21,52 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. 
  */
-package com.github.javaplugs.minibus;
-
-import java.lang.ref.ReferenceQueue;
-import java.lang.ref.WeakReference;
+package com.github.javaplugs.minibus.old;
 
 /**
- * Provide weak link wrapper for handler class and expose some generic handlers methods.
+ * Any subtype of this can handle messages in EventBus.
+ * There is no restriction on how many handlers will be subscribed to one or another event type.
+ * Keep in mind that handler will be subscribed to EventBush using weak link.
  */
-class WeakHandler<H extends EventBusHandler> extends WeakReference<H> {
+@Deprecated
+public interface EventHandler<E extends Event> {
 
-    private final int hash;
+    /**
+     * Return exact event type that must be handled by this handler.
+     * Can return null in this case {@link EventHandler#canHandle(java.lang.String)}
+     * will be called each time to decide if particular message should be handled by current consumer.
+     *
+     * @return Type name or null
+     */
+    String getType();
 
-    private final Class handlerTypeClass;
+    /**
+     * In a case if {@link EventHandler#getType()} return null this method will be called to
+     * check if current event type can be handled here.
+     * If getType() result is not null this method will not be called.
+     *
+     * @param eventType Event type
+     * @return True if event type can be handled or False.
+     */
+    boolean canHandle(String eventType);
 
-    WeakHandler(H handler, ReferenceQueue q) {
-        super(handler, q);
-        hash = handler.hashCode();
-        handlerTypeClass = handler.getTypeClass();
-    }
-
-    public Class getHandlerTypeClass() {
-        return handlerTypeClass;
-    }
-
-    @Override
-    public int hashCode() {
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (!(obj instanceof WeakHandler)) {
-            return false;
-        }
-
-        Object t = this.get();
-        Object u = ((WeakHandler)obj).get();
-        if (t == u) {
-            return true;
-        }
-        if (t == null || u == null) {
-            return false;
-        }
-        return t.equals(u);
-    }
+    /**
+     * This method should handle event of appropriate type.
+     */
+    void handle(E event);
 }

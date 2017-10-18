@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE. 
  */
-package com.github.javaplugs.minibus;
+package com.github.javaplugs.minibus.old;
 
 import java.lang.reflect.Constructor;
 
@@ -31,6 +31,7 @@ import java.lang.reflect.Constructor;
  * and implementing your own create method.
  * Or you can implement create method in any part of your code.
  */
+@Deprecated
 public class EventBuilder<E extends Event> {
 
     private final E event;
