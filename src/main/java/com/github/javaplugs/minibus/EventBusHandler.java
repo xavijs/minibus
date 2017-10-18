@@ -55,11 +55,11 @@ public abstract class EventBusHandler<E extends EventBusEvent> {
     }
 
     /**
-     * If {@link EventBusSimpleHandler#getTypeClass} return null this method will be called to
+     * If {@link EventBusHandler#getTypeClass} return null this method will be called to
      * check if current event can be handled here.
      * If getType() result is not null this method will not be called.
      *
-     * @param eventType Event type
+     * @param cls Event class
      * @return True if event type can be handled or False.
      */
     public boolean canHandle(Class<? extends EventBusEvent> cls) {
